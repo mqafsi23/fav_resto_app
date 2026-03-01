@@ -34,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.notifications_active, color: Colors.orange),
-                title: const Text('Tes Notifikasi (Only on Android development stage)'),
+                title: const Text('Tes Notifikasi (Only for development)'),
                 onTap: () async {
                   await NotificationHelper().showNotification();
                 },
