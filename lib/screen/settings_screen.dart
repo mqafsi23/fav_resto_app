@@ -9,7 +9,12 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pengaturan', style: TextStyle(fontWeight: FontWeight.bold))),
+      appBar: AppBar(
+        title: const Text(
+          'Pengaturan',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Consumer<PreferencesHelper>(
         builder: (context, provider, child) {
           return ListView(
@@ -25,7 +30,9 @@ class SettingsScreen extends StatelessWidget {
               const Divider(),
               SwitchListTile(
                 title: const Text('Pengingat Makan Siang'),
-                subtitle: const Text('Ingatkan saya restoran acak setiap jam 11:00 AM'),
+                subtitle: const Text(
+                  'Ingatkan saya restoran acak setiap jam 11:00 AM',
+                ),
                 value: provider.isDailyReminderActive,
                 onChanged: (value) {
                   provider.enableDailyReminder(value);
@@ -33,7 +40,10 @@ class SettingsScreen extends StatelessWidget {
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.notifications_active, color: Colors.orange),
+                leading: const Icon(
+                  Icons.notifications_active,
+                  color: Colors.orange,
+                ),
                 title: const Text('Tes Notifikasi (Only for development)'),
                 onTap: () async {
                   await NotificationHelper().showNotification();

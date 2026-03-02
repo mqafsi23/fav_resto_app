@@ -1,4 +1,5 @@
-import 'package:fav_resto_app/service/notification_helper.dart' show NotificationHelper;
+import 'package:fav_resto_app/service/notification_helper.dart'
+    show NotificationHelper;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -23,29 +24,41 @@ void main() {
       expect(provider.listState, isA<InitialState>());
     });
 
-    test('SHOULD returns restaurant list WHEN API data returned successfully', () async {
-      final jsonResponse = '{"error": false, "message": "success", "count": 1, "restaurants": [{"id": "1", "name": "Kafe", "description": "Enak", "pictureId": "1", "city": "Jakarta", "rating": 5.0}]}';
-      when(mockClient.get(Uri.parse('https://restaurant-api.dicoding.dev/list')))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+    test(
+      'SHOULD returns restaurant list WHEN API data returned successfully',
+      () async {
+        final jsonResponse =
+            '{"error": false, "message": "success", "count": 1, "restaurants": [{"id": "1", "name": "Kafe", "description": "Enak", "pictureId": "1", "city": "Jakarta", "rating": 5.0}]}';
+        when(
+          mockClient.get(Uri.parse('https://restaurant-api.dicoding.dev/list')),
+        ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      await provider.fetchRestaurants();
+        await provider.fetchRestaurants();
 
-      expect(provider.listState, isA<SuccessState<List<Restaurant>>>());
-    });
+        expect(provider.listState, isA<SuccessState<List<Restaurant>>>());
+      },
+    );
 
-    test('SHOULD returns an error WHEN API data returned unsuccessfully', () async {
-      when(mockClient.get(Uri.parse('https://restaurant-api.dicoding.dev/list')))
-          .thenAnswer((_) async => http.Response('Not Found', 404));
+    test(
+      'SHOULD returns an error WHEN API data returned unsuccessfully',
+      () async {
+        when(
+          mockClient.get(Uri.parse('https://restaurant-api.dicoding.dev/list')),
+        ).thenAnswer((_) async => http.Response('Not Found', 404));
 
-      await provider.fetchRestaurants();
+        await provider.fetchRestaurants();
 
-      expect(provider.listState, isA<ErrorState<List<Restaurant>>>());
-    });
+        expect(provider.listState, isA<ErrorState<List<Restaurant>>>());
+      },
+    );
 
-    test("SHOULD doesn't have an error WHEN NotificationHelper retrieves the data from API", () async {      
-      final helper = NotificationHelper();
+    test(
+      "SHOULD doesn't have an error WHEN NotificationHelper retrieves the data from API",
+      () async {
+        final helper = NotificationHelper();
 
-      expect(() async => await helper.showNotification(), returnsNormally);
-    });
+        expect(() async => await helper.showNotification(), returnsNormally);
+      },
+    );
   });
 }

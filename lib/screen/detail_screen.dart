@@ -21,8 +21,14 @@ class _DetailScreenState extends State<DetailScreen> {
     super.initState();
     Future.microtask(() {
       if (mounted) {
-        Provider.of<RestaurantProvider>(context, listen: false).fetchDetail(widget.id);
-        Provider.of<DatabaseProvider>(context, listen: false).loadMyReview(widget.id);
+        Provider.of<RestaurantProvider>(
+          context,
+          listen: false,
+        ).fetchDetail(widget.id);
+        Provider.of<DatabaseProvider>(
+          context,
+          listen: false,
+        ).loadMyReview(widget.id);
       }
     });
   }
@@ -54,11 +60,23 @@ class _DetailScreenState extends State<DetailScreen> {
                   expandedHeight: 250.0,
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
-                    title: Text(resto.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      )
+                    title: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 6.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Text(
+                        resto.name,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                     background: Hero(
                       tag: resto.id,
@@ -68,6 +86,9 @@ class _DetailScreenState extends State<DetailScreen> {
                           Image.network(
                             'https://restaurant-api.dicoding.dev/images/medium/${resto.pictureId}',
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.broken_image, size: 50);
+                            },
                           ),
                           const DecoratedBox(
                             decoration: BoxDecoration(
@@ -95,11 +116,14 @@ class _DetailScreenState extends State<DetailScreen> {
                             Expanded(
                               child: Row(
                                 children: [
-                                  const Icon(Icons.location_on, color: Colors.red),
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Colors.red,
+                                  ),
                                   const SizedBox(width: 4),
                                   Expanded(
                                     child: Text(
-                                      resto.city, 
+                                      resto.city,
                                       style: const TextStyle(fontSize: 16),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -112,45 +136,95 @@ class _DetailScreenState extends State<DetailScreen> {
                               children: [
                                 const Icon(Icons.star, color: Colors.orange),
                                 const SizedBox(width: 4),
-                                Text('${resto.rating} / 5.0', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                Text(
+                                  '${resto.rating} / 5.0',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        Text(resto.address, style: const TextStyle(color: Colors.grey)),
-                        
-                        const SizedBox(height: 24),
-                        const Text("Tentang Restoran", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        Text(resto.description, style: const TextStyle(height: 1.5)),
-                        
-                        const SizedBox(height: 24),
-                        const Text("Menu Makanan", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8, runSpacing: 8,
-                          children: resto.foods.map((food) => Chip(
-                            label: Text(food),
-                            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                            side: BorderSide.none,
-                          )).toList(),
+                        Text(
+                          resto.address,
+                          style: const TextStyle(color: Colors.grey),
                         ),
 
                         const SizedBox(height: 24),
-                        const Text("Menu Minuman", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text(
+                          "Tentang Restoran",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          resto.description,
+                          style: const TextStyle(height: 1.5),
+                        ),
+
+                        const SizedBox(height: 24),
+                        const Text(
+                          "Menu Makanan",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Wrap(
-                          spacing: 8, runSpacing: 8,
-                          children: resto.drinks.map((drink) => Chip(
-                            label: Text(drink),
-                            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                            side: BorderSide.none,
-                          )).toList(),
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: resto.foods
+                              .map(
+                                (food) => Chip(
+                                  label: Text(food),
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primaryContainer,
+                                  side: BorderSide.none,
+                                ),
+                              )
+                              .toList(),
+                        ),
+
+                        const SizedBox(height: 24),
+                        const Text(
+                          "Menu Minuman",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: resto.drinks
+                              .map(
+                                (drink) => Chip(
+                                  label: Text(drink),
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.secondaryContainer,
+                                  side: BorderSide.none,
+                                ),
+                              )
+                              .toList(),
                         ),
 
                         const Divider(height: 60, thickness: 1),
-                        const Text("Catatan Kuliner Pribadimu", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text(
+                          "Catatan Kuliner Pribadimu",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(height: 12),
 
                         Consumer<DatabaseProvider>(
@@ -159,43 +233,84 @@ class _DetailScreenState extends State<DetailScreen> {
 
                             if (myReview != null) {
                               return Card(
-                                color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer
+                                    .withValues(alpha: 0.3),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                                 elevation: 0,
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("⭐ Ulasanmu (${myReview.date})", style: const TextStyle(fontWeight: FontWeight.bold)),
+                                          Text(
+                                            "⭐ Ulasanmu (${myReview.date})",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           Row(
                                             children: [
                                               IconButton(
-                                                icon: const Icon(Icons.edit, color: Colors.blue),
+                                                icon: const Icon(
+                                                  Icons.edit,
+                                                  color: Colors.blue,
+                                                ),
                                                 onPressed: () {
-                                                  _nameController.text = myReview.name;
-                                                  _reviewController.text = myReview.review;
-                                                  dbProv.deleteMyReview(resto.id); 
+                                                  _nameController.text =
+                                                      myReview.name;
+                                                  _reviewController.text =
+                                                      myReview.review;
+                                                  dbProv.deleteMyReview(
+                                                    resto.id,
+                                                  );
                                                 },
                                               ),
                                               IconButton(
-                                                icon: const Icon(Icons.delete, color: Colors.red),
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                ),
                                                 onPressed: () {
-                                                  dbProv.deleteMyReview(resto.id);
-                                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ulasan berhasil dihapus')));
+                                                  dbProv.deleteMyReview(
+                                                    resto.id,
+                                                  );
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        'Ulasan berhasil dihapus',
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
                                               ),
                                             ],
-                                          )
+                                          ),
                                         ],
                                       ),
                                       const SizedBox(height: 8),
-                                      Text('Atas nama: ${myReview.name}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                                      Text(
+                                        'Atas nama: ${myReview.name}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
                                       const SizedBox(height: 4),
-                                      Text(myReview.review, style: const TextStyle(fontSize: 15)),
+                                      Text(
+                                        myReview.review,
+                                        style: const TextStyle(fontSize: 15),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -208,7 +323,9 @@ class _DetailScreenState extends State<DetailScreen> {
                                   controller: _nameController,
                                   decoration: InputDecoration(
                                     labelText: 'Nama Kamu',
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                     isDense: true,
                                   ),
                                 ),
@@ -218,7 +335,9 @@ class _DetailScreenState extends State<DetailScreen> {
                                   maxLines: 3,
                                   decoration: InputDecoration(
                                     labelText: 'Gimana rasa makanannya?',
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                     alignLabelWithHint: true,
                                   ),
                                 ),
@@ -227,21 +346,45 @@ class _DetailScreenState extends State<DetailScreen> {
                                   width: double.infinity,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 16,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                     ),
                                     onPressed: () {
-                                      if (_nameController.text.isNotEmpty && _reviewController.text.isNotEmpty) {
-                                        dbProv.saveMyReview(resto.id, _nameController.text, _reviewController.text);
-                                        prov.addReview(resto.id, _nameController.text, _reviewController.text);
+                                      if (_nameController.text.isNotEmpty &&
+                                          _reviewController.text.isNotEmpty) {
+                                        dbProv.saveMyReview(
+                                          resto.id,
+                                          _nameController.text,
+                                          _reviewController.text,
+                                        );
+                                        prov.addReview(
+                                          resto.id,
+                                          _nameController.text,
+                                          _reviewController.text,
+                                        );
 
                                         _nameController.clear();
                                         _reviewController.clear();
-                                        FocusScope.of(context).unfocus(); 
-                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ulasan tersimpan!')));
+                                        FocusScope.of(context).unfocus();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Ulasan tersimpan!'),
+                                          ),
+                                        );
                                       }
                                     },
-                                    child: const Text('Simpan Ulasan', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    child: const Text(
+                                      'Simpan Ulasan',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -250,38 +393,58 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
 
                         const SizedBox(height: 32),
-                        const Text("Apa Kata Mereka?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text(
+                          "Apa Kata Mereka?",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(height: 12),
-                        
-                        ...resto.reviews.map((review) => Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        review.name, 
-                                        style: const TextStyle(fontWeight: FontWeight.bold),
+
+                        ...resto.reviews.map(
+                          (review) => Card(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          review.name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Text(review.date, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Text(review.review),
-                              ],
+                                      const SizedBox(width: 12),
+                                      Text(
+                                        review.date,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(review.review),
+                                ],
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         const SizedBox(height: 40),
                       ],
                     ),
@@ -297,7 +460,8 @@ class _DetailScreenState extends State<DetailScreen> {
       floatingActionButton: Consumer<RestaurantProvider>(
         builder: (context, prov, child) {
           if (prov.detailState is SuccessState<RestaurantDetail>) {
-            final resto = (prov.detailState as SuccessState<RestaurantDetail>).data;
+            final resto =
+                (prov.detailState as SuccessState<RestaurantDetail>).data;
             return Consumer<DatabaseProvider>(
               builder: (context, dbProv, child) {
                 return FutureBuilder<bool>(
@@ -313,10 +477,18 @@ class _DetailScreenState extends State<DetailScreen> {
                       onPressed: () {
                         if (isFavorited) {
                           dbProv.removeFavorite(resto.id);
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Dihapus dari Favorit')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Dihapus dari Favorit'),
+                            ),
+                          );
                         } else {
                           dbProv.addFavorite(resto);
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ditambahkan ke Favorit!')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Ditambahkan ke Favorit!'),
+                            ),
+                          );
                         }
                       },
                     );

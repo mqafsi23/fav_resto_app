@@ -14,12 +14,18 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Restoraaan', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Restoraaan',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
             color: Theme.of(context).appBarTheme.backgroundColor,
             child: TextField(
               decoration: InputDecoration(
@@ -36,11 +42,13 @@ class HomeScreen extends StatelessWidget {
               onChanged: (value) => provider.searchRestaurants(value),
             ),
           ),
-          
+
           Expanded(
             child: Consumer<RestaurantProvider>(
               builder: (context, prov, _) {
-                final state = prov.searchState is InitialState ? prov.listState : prov.searchState;
+                final state = prov.searchState is InitialState
+                    ? prov.listState
+                    : prov.searchState;
 
                 if (state is LoadingState) {
                   return const Center(child: CircularProgressIndicator());
@@ -51,16 +59,26 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.wifi_off, size: 80, color: Colors.grey[400]),
+                          Icon(
+                            Icons.wifi_off,
+                            size: 80,
+                            color: Colors.grey[400],
+                          ),
                           const SizedBox(height: 16),
-                          Text(state.message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16)),
+                          Text(
+                            state.message,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 16),
+                          ),
                           const SizedBox(height: 16),
                           ElevatedButton.icon(
                             onPressed: () => prov.fetchRestaurants(),
                             icon: const Icon(Icons.refresh),
                             label: const Text('Coba Lagi'),
-                            style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                          )
+                            style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -69,7 +87,10 @@ class HomeScreen extends StatelessWidget {
                   final list = state.data;
                   if (list.isEmpty) {
                     return Center(
-                      child: Text('Duh, restorannya nggak ketemu.', style: TextStyle(color: Colors.grey[600], fontSize: 16)),
+                      child: Text(
+                        'Duh, restorannya nggak ketemu.',
+                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      ),
                     );
                   }
 
@@ -99,7 +120,10 @@ class HomeScreen extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen(id: resto.id)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DetailScreen(id: resto.id)),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,6 +135,12 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 180,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.broken_image,
+                    size: 50,
+                  ); // Gambar pengganti saat offline
+                },
               ),
             ),
             Padding(
@@ -122,20 +152,36 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(resto.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(
+                          resto.name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                            const Icon(
+                              Icons.location_on,
+                              size: 16,
+                              color: Colors.grey,
+                            ),
                             const SizedBox(width: 4),
-                            Text(resto.city, style: const TextStyle(color: Colors.grey)),
+                            Text(
+                              resto.city,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.orange.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
@@ -144,10 +190,16 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         const Icon(Icons.star, size: 16, color: Colors.orange),
                         const SizedBox(width: 4),
-                        Text(resto.rating.toString(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)),
+                        Text(
+                          resto.rating.toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange,
+                          ),
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

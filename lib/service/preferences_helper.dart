@@ -41,14 +41,14 @@ class PreferencesHelper extends ChangeNotifier {
     if (Platform.isAndroid) {
       if (value) {
         final now = DateTime.now();
-        var scheduledTime = DateTime(now.year, now.month, now.day, 11, 0); 
+        var scheduledTime = DateTime(now.year, now.month, now.day, 11, 0);
         if (now.isAfter(scheduledTime)) {
-          scheduledTime = scheduledTime.add(const Duration(days: 1)); 
+          scheduledTime = scheduledTime.add(const Duration(days: 1));
         }
         final initialDelay = scheduledTime.difference(now);
 
         Workmanager().registerPeriodicTask(
-          "1", 
+          "1",
           "daily_reminder_task",
           initialDelay: initialDelay,
           frequency: const Duration(hours: 24),
@@ -57,7 +57,9 @@ class PreferencesHelper extends ChangeNotifier {
         Workmanager().cancelByUniqueName("1");
       }
     } else {
-      debugPrint("Penjadwalan Workmanager hanya berjalan di perangkat Android.");
+      debugPrint(
+        "Penjadwalan Workmanager hanya berjalan di perangkat Android.",
+      );
     }
   }
 }

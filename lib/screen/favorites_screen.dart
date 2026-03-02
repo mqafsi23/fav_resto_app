@@ -10,7 +10,12 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Restoran Favorit', style: TextStyle(fontWeight: FontWeight.bold))),
+      appBar: AppBar(
+        title: const Text(
+          'Restoran Favorit',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Consumer<DatabaseProvider>(
         builder: (context, provider, child) {
           final state = provider.state;
@@ -38,7 +43,9 @@ class FavoritesScreen extends StatelessWidget {
                 return Card(
                   elevation: 2,
                   margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(8),
                     leading: Hero(
@@ -47,15 +54,31 @@ class FavoritesScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
                           'https://restaurant-api.dicoding.dev/images/small/${resto.pictureId}',
-                          width: 80, height: 80, fit: BoxFit.cover,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.broken_image,
+                              size: 50,
+                            ); // Gambar pengganti saat offline
+                          },
                         ),
                       ),
                     ),
-                    title: Text(resto.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    title: Text(
+                      resto.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Text('${resto.city}\n⭐ ${resto.rating}'),
                     isThreeLine: true,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen(id: resto.id)));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailScreen(id: resto.id),
+                        ),
+                      );
                     },
                   ),
                 );

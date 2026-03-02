@@ -10,8 +10,6 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   ResultState<List<Restaurant>> state = InitialState();
-  String _message = '';
-  String get message => _message;
 
   CustomerReview? _myReview;
   CustomerReview? get myReview => _myReview;
@@ -19,22 +17,46 @@ class DatabaseProvider extends ChangeNotifier {
   Future<void> loadMyReview(String restaurantId) async {
     final data = await databaseHelper.getMyReview(restaurantId);
     if (data != null) {
-      _myReview = CustomerReview(name: data['name'], review: data['review'], date: data['date']);
+      _myReview = CustomerReview(
+        name: data['name'],
+        review: data['review'],
+        date: data['date'],
+      );
     } else {
       _myReview = null;
     }
     notifyListeners();
   }
 
-  Future<void> saveMyReview(String restaurantId, String name, String review) async {
+  Future<void> saveMyReview(
+    String restaurantId,
+    String name,
+    String review,
+  ) async {
     final now = DateTime.now();
     final List<String> monthName = [
-      '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      '',
+      'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember',
     ];
     final dateString = "${now.day} ${monthName[now.month]} ${now.year}";
-    
-    await databaseHelper.insertOrUpdateReview(restaurantId, name, review, dateString);
+
+    await databaseHelper.insertOrUpdateReview(
+      restaurantId,
+      name,
+      review,
+      dateString,
+    );
     await loadMyReview(restaurantId);
   }
 
@@ -64,7 +86,6 @@ class DatabaseProvider extends ChangeNotifier {
       await databaseHelper.insertFavorite(restaurant);
       _getFavorites();
     } catch (e) {
-      _message = 'Gagal menambahkan favorit';
       notifyListeners();
     }
   }
@@ -74,7 +95,6 @@ class DatabaseProvider extends ChangeNotifier {
       await databaseHelper.removeFavorite(id);
       _getFavorites();
     } catch (e) {
-      _message = 'Gagal menghapus favorit';
       notifyListeners();
     }
   }

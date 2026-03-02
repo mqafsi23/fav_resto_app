@@ -11,12 +11,16 @@ import 'package:fav_resto_app/service/preferences_helper.dart';
 import 'package:fav_resto_app/service/restaurant_provider.dart';
 
 void main() {
-  testWidgets('SHOULD displays TextField on HomeScreen WHEN the app started', (WidgetTester tester) async {
+  testWidgets('SHOULD displays TextField on HomeScreen WHEN the app started', (
+    WidgetTester tester,
+  ) async {
     final mockClient = MockClient();
-    const dummyResponse = '{"error": false, "message": "success", "count": 0, "restaurants": []}';
-    
-    when(mockClient.get(Uri.parse('https://restaurant-api.dicoding.dev/list')))
-        .thenAnswer((_) async => http.Response(dummyResponse, 200));
+    const dummyResponse =
+        '{"error": false, "message": "success", "count": 0, "restaurants": []}';
+
+    when(
+      mockClient.get(Uri.parse('https://restaurant-api.dicoding.dev/list')),
+    ).thenAnswer((_) async => http.Response(dummyResponse, 200));
 
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
@@ -24,8 +28,13 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => RestaurantProvider(client: mockClient)..fetchRestaurants()),
-          ChangeNotifierProvider(create: (_) => PreferencesHelper(sharedPreferences: prefs)),
+          ChangeNotifierProvider(
+            create: (_) =>
+                RestaurantProvider(client: mockClient)..fetchRestaurants(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => PreferencesHelper(sharedPreferences: prefs),
+          ),
         ],
         child: const MaterialApp(home: HomeScreen()),
       ),
